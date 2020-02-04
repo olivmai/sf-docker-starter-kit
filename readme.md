@@ -28,4 +28,11 @@ syncs:
     src: '/Path/to/your/project/root'
 ```
 
+You can also update your ```.gitignore``` file if you don't want to push docker files to your repo
+```git
+.docker
+docker-compose.yml
+docker-sync.yml
+```
+
 
