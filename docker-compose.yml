@@ -1,0 +1,47 @@
+version: '3.3'
+
+services:
+    db:
+        container_name: db
+        image: mysql:5.7
+        command: ["--default-authentication-plugin=mysql_native_password"]
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: symfony
+            MYSQL_USER: symfony
+            MYSQL_PASSWORD: symfony
+        volumes:
+            - ./.docker.mysql/db:/var/lib/mysql
+        networks:
+            - db
+    php:
+        build: .docker/php
+        volumes:
+            - sf-sync:/var/www/symfony:nocopy
+            - ./logs/symfony:/var/www/symfony/app/logs:cached
+        ports:
+            - 9000:9001
+        depends_on:
+            - db
+        networks:
+            - php
+            - db
+    nginx:
+        build: .docker/nginx
+        ports:
+            - 80:80
+        volumes:
+            - ./logs/nginx/:/var/log/nginx:cached
+            - .:/var/www/symfony:cached
+        networks:
+            - php
+        depends_on:
+            - php
+networks:
+    db:
+    php:
+volumes:
+    sf-sync:
+        external: true

@@ -1,0 +1,11 @@
+version: "2"
+options:
+  compose-file-path: 'docker-compose.yml'
+  verbose: false
+  
+syncs:
+  sf-sync:
+    notify_terminal: true
+    src: '/Path/to/your/project/root'
+    sync_prefer: 'default'
+    sync_excludes: ["var/cache", "var/log", ".idea"]
